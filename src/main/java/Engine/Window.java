@@ -112,7 +112,7 @@ public class Window {
         chunk.compile();
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CW);
+        
         
     }
     
