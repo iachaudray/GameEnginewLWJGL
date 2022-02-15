@@ -1,6 +1,7 @@
 package Engine;
 
 import Engine.Objects.GameObject;
+import lombok.Data;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -16,13 +17,15 @@ public class Camera extends GameObject {
     private static final Vector3f yUp = new Vector3f(0.0f, 1.0f, 0.0f);
     private static final Matrix4f projectionMatrix = new Matrix4f().perspective(FOV, (float) Window.get().getWidth() / Window.get().getHeight(),
             Z_NEAR, Z_FAR);
+    private static final Matrix4f lightProjectionMatrix = new Matrix4f().ortho(-20, 20, -20, 20, 1f, 25f);
+    private Matrix4f lightView;
     private static Matrix4f matrix4f = new Matrix4f();
     private static final Matrix3f normal = new Matrix3f();
     private static final Matrix3f normalmat = new Matrix3f();
     
     public Camera(Vector3f position) {
         super(position, new Vector3f(1), new Vector3f(), "");
-        
+        lightView = matrix4f.lookAt(new Vector3f(Window.get().getSunLightDirection()).mul(10f), new Vector3f(0, 0, 0), new Vector3f(0, 1f, 0));
     }
     
     public Matrix4f getViewMatrix() {

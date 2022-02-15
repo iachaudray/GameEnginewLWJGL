@@ -2,14 +2,16 @@ package Engine;
 
 import Engine.Input.KeyListener;
 import Engine.Input.MouseListener;
-import Engine.Objects.*;
-import lombok.Data;
+import Engine.Objects.Block;
+import Engine.Objects.Chunk;
+import Engine.Objects.GameObject;
+import Engine.Objects.Light;
+import lombok.*;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -111,8 +113,7 @@ public class Window {
         buildMesh(chunk);
         chunk.compile();
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CW);
+        
         
     }
     
@@ -156,6 +157,10 @@ public class Window {
     
     public void addGameObject(GameObject e) {
         gameObjects.add(e);
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof Window;
     }
     
 }
