@@ -105,13 +105,12 @@ public class Chunk {
         glBindFramebuffer(GL_FRAMEBUFFER, depthBufferTex);
         glClear(GL_DEPTH_BUFFER_BIT);
         shadowShader.use();
-        shadowShader.uploadMat4f("projectionMatrix", Window.get().getCamera().getProjectionMatrix());
-        shadowShader.uploadTexture("texture", depthBufferTex);
-        shadowShader.uploadMat4f("viewMatrix", Window.get().getCamera().getViewMatrix());
+        shadowShader.uploadMat4f("lightProjection", Camera.lightProjection);
+        shadowShader.uploadMat4f("lightView", Window.get().getCamera().lightView);
         shadowShader.uploadMat4f("modelMatrix", Window.get().getCamera().getModelViewMatrix(position));
+        glBindTexture(GL_TEXTURE_2D, depthBufferTex);
         glDrawElements(GL_TRIANGLES, vbo.size(), GL_UNSIGNED_INT, 0);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        System.out.println();
         
         //render normally
         glViewport(0, 0, Window.get().getWidth(), Window.get().getHeight());
@@ -120,6 +119,10 @@ public class Chunk {
         shader.use();
         shader.uploadMat4f("projectionMatrix", Window.get().getCamera().getProjectionMatrix());
         shader.uploadMat4f("viewMatrix", Window.get().getCamera().getViewMatrix());
+        shader.uploadMat4f("lightProjection", Camera.lightProjection);
+        shader.uploadMat4f("lightView", Window.get().getCamera().lightView);
+        glBindTexture(GL_TEXTURE_2D, depthBufferTex);
+        shadowShader.uploadTexture("depthTex", depthBufferTex);
         shader.uploadMat4f("modelMatrix", Window.get().getCamera().getModelViewMatrix(position));
         shader.uploadVec3f("sunLightDirection", Window.get().getSunLightDirection());
         glBindVertexArray(vaoID);

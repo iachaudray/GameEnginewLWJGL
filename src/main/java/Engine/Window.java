@@ -12,6 +12,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -34,6 +35,7 @@ public class Window {
     private Light light;
     private Vector3f sunLightDirection;
     private Chunk chunk;
+    private ArrayList<Chunk> chunks;
     private Random random;
     
     private Window(int height, int width, String title) {
@@ -43,6 +45,7 @@ public class Window {
         this.height = height;
         this.width = width;
         this.title = title;
+        this.chunks = new ArrayList<>();
         this.random = new Random();
         this.gameObjects = new LinkedList<>();
         sunLightDirection = new Vector3f((float) Math.sin(Math.PI / 2), (float) Math.sin(Math.PI / 10), (float) Math.sin(Math.PI / 5));
@@ -98,6 +101,7 @@ public class Window {
         }
          */
         Light.lightColor = new Vector3f(1f);
+        
         chunk = new Chunk(new Vector3f(0, 0, 0));
         for (int i = 0; i < 8; i += 2) {
             for (int j = 0; j < 8; j += 2) {
@@ -105,13 +109,16 @@ public class Window {
                     if (random.nextBoolean()) {
                         chunk.blocks.add(new Block(new Vector3f(i, j, k), Block.Type.BLOCK));
                     }
-                    
-                }
                 
+                }
+            
             }
         }
         buildMesh(chunk);
         chunk.compile();
+        chunks.add(chunk);
+        
+        
         glEnable(GL_DEPTH_TEST);
         
         
@@ -131,7 +138,9 @@ public class Window {
             for (GameObject e : gameObjects) {
                 e.render();
             }
-            chunk.render();
+            for (Chunk c : chunks) {
+                c.render();
+            }
             glfwSwapBuffers(window);
             endTime = getTime();
             dt = endTime - beginTime;

@@ -47,8 +47,7 @@ public class ChunkBuilder {
                 }
                 if (((blockI.position.y - CubeModel.CUBESIZE) == blockJ.position.y) && rightX && rightZ) {
                     ny = false;
-                    System.out.println("BlockJ: " + blockJ.position);
-                    System.out.println("BlockI: " + blockI.position);
+                    
                 }
                 if (((blockI.position.z + CubeModel.CUBESIZE) == blockJ.position.z) && rightX && rightY) {
                     pz = false;
