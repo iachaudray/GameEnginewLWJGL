@@ -161,8 +161,8 @@ public class Window {
         
     }
     
-    //public void addGameObject(GameObject e) {
-        //gameObjects.add(e);
-    //}
+    public void addGameObject(GameObject e) {
+        gameObjects.add(e);
+    }
     
 }
