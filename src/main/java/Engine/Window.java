@@ -29,11 +29,10 @@ public class Window {
     public static float r, g, b, a;
     private final String title;
     private long window;
-    /*private List<GameObject> gameObjects;
+    private List<GameObject> gameObjects;
     private ArrayList<Chunk> chunks;
     private Light light;
-    
-     */
+    private Camera camera;
     private Vector3f sunLightDirection;
     private Chunk chunk;
     
@@ -47,9 +46,9 @@ public class Window {
         this.height = height;
         this.width = width;
         this.title = title;
-        //this.chunks = new ArrayList<>();
+        this.chunks = new ArrayList<>();
         this.random = new Random();
-        //this.gameObjects = new LinkedList<>();
+        this.gameObjects = new LinkedList<>();
         sunLightDirection = new Vector3f((float) Math.sin(Math.PI / 2), (float) Math.sin(Math.PI / 10), (float) Math.sin(Math.PI / 5));
         
     }
@@ -91,7 +90,7 @@ public class Window {
         GL.createCapabilities();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         currentScene = new GameScene();
-        /*camera = new Camera(new Vector3f(0.0f, 5.0f, 1.0f));
+        camera = new Camera(new Vector3f(0.0f, 5.0f, 1.0f));
         Light.lightColor = new Vector3f(1f);
         
         chunk = new Chunk(new Vector3f(0, 0, 0));
@@ -110,7 +109,7 @@ public class Window {
         chunk.compile();
         chunks.add(chunk);
         
-         */
+        
         
         
         glEnable(GL_DEPTH_TEST);
@@ -131,14 +130,14 @@ public class Window {
             glClearColor(r, g, b, 0.5f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            /*for (GameObject e : gameObjects) {
+            for (GameObject e : gameObjects) {
                 e.render();
             }
             for (Chunk c : chunks) {
                 c.render();
             }
             
-             */
+            
             glfwSwapBuffers(window);
             endTime = getTime();
             dt = endTime - beginTime;
