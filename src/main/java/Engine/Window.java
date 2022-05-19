@@ -50,7 +50,7 @@ public class Window {
         this.random = new Random();
         this.gameObjects = new LinkedList<>();
         sunLightDirection = new Vector3f((float) Math.sin(Math.PI / 2), (float) Math.sin(Math.PI / 10), (float) Math.sin(Math.PI / 5));
-        
+        //a
     }
     
     public void run() {
