@@ -18,13 +18,13 @@ public class MouseListener {
         yOffset = yPos - lastY;
         lastX = xPos;
         lastY = yPos;
-        get().getCamera().rotation.x += yOffset * sensitivity;
-        get().getCamera().rotation.y += xOffset * sensitivity;
-        get().getCamera().rotation.z = 0;
-        if (get().getCamera().rotation.x > 89.0f)
-            get().getCamera().rotation.x = 89.0f;
-        if (get().getCamera().rotation.x < -89.0f)
-            get().getCamera().rotation.x = -89.0f;
+        get().getCurrentScene().currentCamera.rotation.x += yOffset * sensitivity;
+        get().getCurrentScene().currentCamera.rotation.y += xOffset * sensitivity;
+        get().getCurrentScene().currentCamera.rotation.z = 0;
+        if (get().getCurrentScene().currentCamera.rotation.x > 89.0f)
+            get().getCurrentScene().currentCamera.rotation.x = 89.0f;
+        if (get().getCurrentScene().currentCamera.rotation.x < -89.0f)
+            get().getCurrentScene().currentCamera.rotation.x = -89.0f;
         
     }
 }

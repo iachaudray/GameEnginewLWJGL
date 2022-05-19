@@ -1,6 +1,6 @@
 package Engine.Input;
 
-import Engine.Camera;
+import Engine.Objects.Camera;
 import Engine.Window;
 import org.joml.Vector3f;
 

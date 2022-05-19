@@ -2,10 +2,9 @@ package Engine;
 
 import Engine.Input.KeyListener;
 import Engine.Input.MouseListener;
-import Engine.Objects.Block;
-import Engine.Objects.Chunk;
-import Engine.Objects.GameObject;
-import Engine.Objects.Light;
+import Engine.Objects.*;
+import Engine.Scenes.GameScene;
+import Engine.Scenes.Scene;
 import lombok.*;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
@@ -17,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import static Engine.Objects.ChunkBuilder.buildMesh;
+import static Engine.BlockUtils.ChunkBuilder.buildMesh;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -30,24 +29,27 @@ public class Window {
     public static float r, g, b, a;
     private final String title;
     private long window;
-    private List<GameObject> gameObjects;
-    private Camera camera;
+    /*private List<GameObject> gameObjects;
+    private ArrayList<Chunk> chunks;
     private Light light;
+    
+     */
     private Vector3f sunLightDirection;
     private Chunk chunk;
-    private ArrayList<Chunk> chunks;
+    
+    
+    
     private Random random;
+    private Scene currentScene;
     
     private Window(int height, int width, String title) {
-        r = 0.0f;
-        g = 0.72f;
-        b = 0.76f;
+        r = 0.0f; g = 0.72f; b = 0.76f;
         this.height = height;
         this.width = width;
         this.title = title;
-        this.chunks = new ArrayList<>();
+        //this.chunks = new ArrayList<>();
         this.random = new Random();
-        this.gameObjects = new LinkedList<>();
+        //this.gameObjects = new LinkedList<>();
         sunLightDirection = new Vector3f((float) Math.sin(Math.PI / 2), (float) Math.sin(Math.PI / 10), (float) Math.sin(Math.PI / 5));
         
     }
@@ -88,18 +90,8 @@ public class Window {
         glfwShowWindow(window);
         GL.createCapabilities();
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        camera = new Camera(new Vector3f(0.0f, 5.0f, 1.0f));
-        /*for (int i = 0; i < 16; i ++) {
-            for (int j = 0; j < 16; j++) {
-                for (int k = 0; k < 16; k++) {
-                    LightCube lightCube = new LightCube(new Vector3f(i/2f, k/2f, j/2f), new Vector3f(2f), new Vector3f(1.0f, 0.5f, 0.31f), new Vector3f(0f), "LightCube" + i + j);
-                    addGameObject(lightCube);
-                }
-
-            }
-
-        }
-         */
+        currentScene = new GameScene();
+        /*camera = new Camera(new Vector3f(0.0f, 5.0f, 1.0f));
         Light.lightColor = new Vector3f(1f);
         
         chunk = new Chunk(new Vector3f(0, 0, 0));
@@ -118,6 +110,8 @@ public class Window {
         chunk.compile();
         chunks.add(chunk);
         
+         */
+        
         
         glEnable(GL_DEPTH_TEST);
         
@@ -128,24 +122,28 @@ public class Window {
     private void loop() {
         float beginTime = getTime();
         float endTime;
-        float dt = 0;
+        float dt;
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         while (!glfwWindowShouldClose(window)) {
+            
             glfwPollEvents();
-            KeyListener.pollMoves(camera);
+            KeyListener.pollMoves(currentScene.currentCamera);
             glClearColor(r, g, b, 0.5f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            for (GameObject e : gameObjects) {
+            
+            /*for (GameObject e : gameObjects) {
                 e.render();
             }
             for (Chunk c : chunks) {
                 c.render();
             }
+            
+             */
             glfwSwapBuffers(window);
             endTime = getTime();
             dt = endTime - beginTime;
             beginTime = endTime;
-            
+            currentScene.update(dt);
         }
     }
     
@@ -164,12 +162,8 @@ public class Window {
         
     }
     
-    public void addGameObject(GameObject e) {
-        gameObjects.add(e);
-    }
-    
-    protected boolean canEqual(final Object other) {
-        return other instanceof Window;
-    }
+    //public void addGameObject(GameObject e) {
+        //gameObjects.add(e);
+    //}
     
 }

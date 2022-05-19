@@ -1,6 +1,7 @@
-package Engine;
+package Engine.Objects;
 
 import Engine.Objects.GameObject;
+import Engine.Window;
 import lombok.Data;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;

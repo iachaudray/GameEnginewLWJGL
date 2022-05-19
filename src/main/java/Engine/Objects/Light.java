@@ -60,9 +60,9 @@ public class Light extends GameObject {
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, verts, GL_DYNAMIC_DRAW);
         shader.use();
-        shader.uploadMat4f("projectionMatrix", Window.get().getCamera().getProjectionMatrix());
-        shader.uploadMat4f("viewMatrix", Window.get().getCamera().getViewMatrix());
-        shader.uploadMat4f("modelMatrix", Window.get().getCamera().getModelViewMatrix(this));
+        shader.uploadMat4f("projectionMatrix", Window.get().getCurrentScene().currentCamera.getProjectionMatrix());
+        shader.uploadMat4f("viewMatrix", Window.get().getCurrentScene().currentCamera.getViewMatrix());
+        shader.uploadMat4f("modelMatrix", Window.get().getCurrentScene().currentCamera.getModelViewMatrix(this));
         shader.uploadVec3f("lightColor", lightColor);
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);

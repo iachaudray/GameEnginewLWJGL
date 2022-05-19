@@ -1,7 +1,10 @@
-package Engine.Objects;
+package Engine.BlockUtils;
 
 
-import static Engine.Objects.CubeModel.Faces.*;
+import Engine.Objects.Block;
+import Engine.Objects.Chunk;
+
+import static Engine.BlockUtils.CubeModel.Faces.*;
 
 public class ChunkBuilder {
     

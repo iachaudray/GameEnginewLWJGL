@@ -1,4 +1,4 @@
-package Engine.Objects;
+package Engine.BlockUtils;
 
 import org.joml.Vector3f;
 import org.lwjgl.cuda.CU;
@@ -44,8 +44,8 @@ public class CubeModel {
                 -CUBESIZE / 2, -CUBESIZE / 2, -CUBESIZE / 2,
                 CUBESIZE / 2, -CUBESIZE / 2, -CUBESIZE / 2
         }, Normalnz);
-        final float[] positions;
-        final Vector3f normal;
+        public final float[] positions;
+        public final Vector3f normal;
         
         Faces(float[] x, Vector3f normal) {
             this.positions = x;

@@ -1,40 +1,33 @@
 package Engine.Objects;
 
-import Engine.Camera;
+import Engine.BlockUtils.CubeModel;
 import Engine.Shader;
 import Engine.Window;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-import static Engine.Objects.CubeModel.convertBlockPosition;
+import static Engine.BlockUtils.CubeModel.convertBlockPosition;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Chunk {
-    private Shader shader, shadowShader;
+    private final Shader shader;
     public ArrayList<Block> blocks = new ArrayList<>();
     private final Vector3f position;
     public ArrayList<Float> vbo;
     private int vaoID, vboId;
     public ArrayList<Integer> elementArray;
     private float[] x;
-    private int frameBufferID;
     private int depthBufferTex;
-    private final static int SHADOW_HEIGHT = 1024;
     
     public Chunk(Vector3f position) {
         this.position = position;
         this.vbo = new ArrayList<>();
         this.elementArray = new ArrayList<>();
         this.shader = new Shader("assets/chunk.glsl");
-        this.shadowShader = new Shader("assets/ShadowMapping.glsl");
     }
     public void addFace(Vector3f position, CubeModel.Faces face) {
         float[] x = convertBlockPosition(position, face);
@@ -59,7 +52,6 @@ public class Chunk {
     
     public void compile() {
         shader.compile();
-        shadowShader.compile();
         shader.use();
         vaoID = glGenVertexArrays();
         glBindVertexArray(vaoID);
@@ -80,8 +72,7 @@ public class Chunk {
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * Float.BYTES, 3 * Float.BYTES);
         glEnableVertexAttribArray(1);
-        
-        frameBufferID = glGenFramebuffers();
+        int frameBufferID = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, frameBufferID);
         depthBufferTex = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, depthBufferTex);
@@ -99,31 +90,16 @@ public class Chunk {
    
     
     public void render() {
-        //render with shadow mapping first
         
-        glViewport(0, 0, SHADOW_HEIGHT, SHADOW_HEIGHT);
-        glBindFramebuffer(GL_FRAMEBUFFER, depthBufferTex);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        shadowShader.use();
-        shadowShader.uploadMat4f("lightProjection", Camera.lightProjection);
-        shadowShader.uploadMat4f("lightView", Window.get().getCamera().lightView);
-        shadowShader.uploadMat4f("modelMatrix", Window.get().getCamera().getModelViewMatrix(position));
-        glBindTexture(GL_TEXTURE_2D, depthBufferTex);
-        glDrawElements(GL_TRIANGLES, vbo.size(), GL_UNSIGNED_INT, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        
-        //render normally
-        glViewport(0, 0, Window.get().getWidth(), Window.get().getHeight());
         glBindBuffer(GL_ARRAY_BUFFER, vboId);
         glBufferData(GL_ARRAY_BUFFER, x, GL_DYNAMIC_DRAW);
         shader.use();
-        shader.uploadMat4f("projectionMatrix", Window.get().getCamera().getProjectionMatrix());
-        shader.uploadMat4f("viewMatrix", Window.get().getCamera().getViewMatrix());
+        shader.uploadMat4f("projectionMatrix", Window.get().getCurrentScene().currentCamera.getProjectionMatrix());
+        shader.uploadMat4f("viewMatrix", Window.get().getCurrentScene().currentCamera.getViewMatrix());
         shader.uploadMat4f("lightProjection", Camera.lightProjection);
-        shader.uploadMat4f("lightView", Window.get().getCamera().lightView);
+        shader.uploadMat4f("lightView", Window.get().getCurrentScene().currentCamera.lightView);
         glBindTexture(GL_TEXTURE_2D, depthBufferTex);
-        shadowShader.uploadTexture("depthTex", depthBufferTex);
-        shader.uploadMat4f("modelMatrix", Window.get().getCamera().getModelViewMatrix(position));
+        shader.uploadMat4f("modelMatrix", Window.get().getCurrentScene().currentCamera.getModelViewMatrix(position));
         shader.uploadVec3f("sunLightDirection", Window.get().getSunLightDirection());
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
