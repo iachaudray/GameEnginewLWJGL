@@ -124,6 +124,7 @@ public class Window {
         float dt;
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         while (!glfwWindowShouldClose(window)) {
+            System.out.println(glGetError());
             
             glfwPollEvents();
             KeyListener.pollMoves(currentScene.currentCamera);
@@ -136,7 +137,6 @@ public class Window {
             for (Chunk c : chunks) {
                 c.render();
             }
-            
             
             glfwSwapBuffers(window);
             endTime = getTime();

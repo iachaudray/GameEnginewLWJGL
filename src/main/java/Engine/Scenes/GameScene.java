@@ -29,11 +29,11 @@ public class GameScene extends Scene {
         this.chunks = new ArrayList<>();
         sunLightDirection = new Vector3f((float) Math.sin(Math.PI / 2), (float) Math.sin(Math.PI / 10), (float) Math.sin(Math.PI / 5));
         currentCamera = new Camera(new Vector3f(0.0f, 5.0f, 1.0f));
-        Light.lightColor = new Vector3f(1f);
+        
         chunk = new Chunk(new Vector3f(0, 0, 0));
-        for (int i = 0; i < 8; i += 2) {
-            for (int j = 0; j < 8; j += 2) {
-                for (int k = 0; k < 8; k += 2) {
+        for (int i = 8; i < 16; i += 2) {
+            for (int j = 8; j < 16; j += 2) {
+                for (int k = 8; k < 16; k += 2) {
                     if (random.nextBoolean()) {
                         chunk.blocks.add(new Block(new Vector3f(i, j, k), Block.Type.BLOCK));
                     }
