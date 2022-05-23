@@ -13,10 +13,9 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Chunk {
+public class Chunk extends GameObject{
     private final Shader shader;
     public ArrayList<Block> blocks = new ArrayList<>();
-    private final Vector3f position;
     public ArrayList<Float> vbo;
     private int vaoID, vboId;
     public ArrayList<Integer> elementArray;
@@ -24,7 +23,8 @@ public class Chunk {
     private int depthBufferTex;
     
     public Chunk(Vector3f position) {
-        this.position = position;
+        super(position, new Vector3f(1), new Vector3f(0));
+        
         this.vbo = new ArrayList<>();
         this.elementArray = new ArrayList<>();
         this.shader = new Shader("assets/chunk.glsl");
@@ -51,6 +51,7 @@ public class Chunk {
     }
     
     public void compile() {
+        
         shader.compile();
         shader.use();
         vaoID = glGenVertexArrays();

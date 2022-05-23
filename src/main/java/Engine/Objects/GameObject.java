@@ -13,7 +13,6 @@ public abstract class GameObject {
     public Vector3f position;
     
     public Vector3f scale;
-    public String name;
     public Vector3f rotation;
     
     public <T extends GameObject> T getObj(Class<T> componentClass) {
@@ -30,11 +29,10 @@ public abstract class GameObject {
         return null;
     }
     
-    public GameObject(Vector3f position, Vector3f scale, Vector3f rotation, String name) {
+    public GameObject(Vector3f position, Vector3f scale, Vector3f rotation) {
         this.position = position;
         this.scale = scale;
         this.rotation = rotation;
-        this.name = name;
         
     }
     

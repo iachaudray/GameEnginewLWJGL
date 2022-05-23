@@ -25,7 +25,7 @@ public class Camera extends GameObject {
     private static final Matrix3f normalmat = new Matrix3f();
     
     public Camera(Vector3f position) {
-        super(position, new Vector3f(1), new Vector3f(), "");
+        super(position, new Vector3f(1), new Vector3f());
         lightView = matrix4f.lookAt(new Vector3f(-2.0f, 4.0f, -1.0f),
         new Vector3f( 0.0f, 0.0f,  0.0f),
         new Vector3f( 0.0f, 1.0f,  0.0f));

@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'java'
 }
@@ -7,13 +9,21 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://raw.githubusercontent.com/SpinyOwl/repo/releases" }
+
+
 }
-project.ext.lwjglVersion = "3.3.0"
-project.ext.jomlVersion = "1.10.2"
-project.ext.lwjglNatives = "natives-macos"
+
+
+
+
 ext {
     lwjglVersion = '3.3.0'
     imguiVersion = '1.86.0'
+    lwjglNatives = "natives-macos"
+    jomlVersion = "1.10.2"
 }
 
 dependencies {
@@ -112,4 +122,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+jar {
+    exclude("com/spinyowl/legui/demo/**")
+    manifest.attributes('Build-Timestamp': new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+            'Created-By': "Gradle ${gradle.gradleVersion}",
+            'Build-Jdk': "${System.properties.getProperty('java.version')} (${System.properties.getProperty('java.vendor')} ${System.properties.getProperty('java.vm.version')})",
+            'Build-OS': "${System.properties.getProperty('os.name')} ${System.properties.getProperty('os.arch')} ${System.properties.getProperty('os.version')}",
+            'Full-Version': project.version)
 }

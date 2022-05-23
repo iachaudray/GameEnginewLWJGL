@@ -22,7 +22,7 @@ public class Light extends GameObject {
     public static Vector3f lightColor = new Vector3f(1.0f);
     
     public Light(Vector3f position, Vector3f scale, String name) {
-        super(position, scale, new Vector3f(), name);
+        super(position, scale, new Vector3f());
         initMesh();
     }
     
@@ -63,7 +63,7 @@ public class Light extends GameObject {
         shader.uploadMat4f("projectionMatrix", Window.get().getCurrentScene().currentCamera.getProjectionMatrix());
         shader.uploadMat4f("viewMatrix", Window.get().getCurrentScene().currentCamera.getViewMatrix());
         shader.uploadMat4f("modelMatrix", Window.get().getCurrentScene().currentCamera.getModelViewMatrix(this));
-        shader.uploadVec3f("lightColor", lightColor);
+        shader.uploadVec3f("lightColor", Light.lightColor);
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
